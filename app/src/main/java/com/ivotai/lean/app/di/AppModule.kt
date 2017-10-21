@@ -4,12 +4,11 @@ import android.content.Context
 import com.ivotai.lean.app.App
 import dagger.Module
 import dagger.Provides
-import javax.inject.Singleton
 
 @Module
 class AppModule(val app: App) {
 
-    @Singleton
+    @AppScope
     @Provides
     fun context(): Context = app.applicationContext
 

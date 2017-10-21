@@ -47,6 +47,12 @@ dependencies {
 
     implementation "com.github.CymChad:BaseRecyclerViewAdapterHelper:$BRVAH_version"
 
+    implementation(["com.squareup.retrofit2:retrofit:$retrofit_version",
+                    "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version",
+                    "com.squareup.retrofit2:converter-gson:$retrofit_version",
+                    "com.squareup.okhttp3:okhttp:$okhttp_version",
+                    "com.squareup.okhttp3:logging-interceptor:$okhttp_version"])
+
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 }
