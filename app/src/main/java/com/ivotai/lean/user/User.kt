@@ -1,4 +1,7 @@
 package com.ivotai.lean.user
 
-
-class User(val id: String, val name: String, val avatar: String)
+data class User(
+		val id: Int, //1
+		val avatar: String, //dd
+		val name: String //li
+)

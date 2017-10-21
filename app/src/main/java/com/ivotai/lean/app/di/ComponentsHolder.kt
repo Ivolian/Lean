@@ -16,4 +16,6 @@ object ComponentsHolder {
                 .build()
     }
 
+    val userComponent by lazy { appComponent.getUserComponent() }
+
 }
