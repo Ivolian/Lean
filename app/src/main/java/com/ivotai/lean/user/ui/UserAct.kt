@@ -1,54 +1,61 @@
 package com.ivotai.lean.user.ui
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
+import android.view.View
+import com.azoft.carousellayoutmanager.CarouselLayoutManager
+import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener
+import com.azoft.carousellayoutmanager.CenterScrollListener
+import com.blankj.utilcode.util.ToastUtils
 import com.ivotai.lean.R
 import com.ivotai.lean.app.di.ComponentsHolder
-import com.ivotai.lean.user.viewModel.User
 import com.ivotai.lean.user.viewModel.UserViewModel
-import io.reactivex.Observer
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.act_user.*
 
 class UserAct : AppCompatActivity() {
 
-    lateinit var userViewModel: UserViewModel
+    private lateinit var userViewModel: UserViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.act_user)
-        val factory = ComponentsHolder.userComponent.getApi()
-        userViewModel = ViewModelProviders.of(this, factory).get(UserViewModel::class.java)
 
-        rvUsers.layoutManager = LinearLayoutManager(this)
-        val adapter = UserAdapter()
-        adapter.bindToRecyclerView(rvUsers)
+        // 白底黑字
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        }
+
+        // getViewModel
+        userViewModel = ViewModelProviders
+                .of(this, ComponentsHolder.userComponent.getViewModelFactory())
+                .get(UserViewModel::class.java)
 
 
-        var o =
-                userViewModel.getUsers()
+        // init view
+        initRecyclerView()
 
-        o.subscribe(
-                object : Observer<List<User>> {
-                    override fun onError(e: Throwable) {
-                        ""
-                    }
+        loadingView.startAnim(lifecycle)
+        userViewModel.getUsers().observe(this, Observer {
+            userAdapter.setNewData(it)
+            loadingView.finishAnim()
+        })
 
-                    override fun onNext(t: List<User>) {
-                        adapter.setNewData(t)
-                    }
+        userAdapter.setOnItemClickListener { _, _, _ -> ToastUtils.showLong("ss") }
+    }
 
-                    override fun onSubscribe(d: Disposable) {
-                        ""
-                    }
 
-                    override fun onComplete() {
-                        ""
-                    }
-                }
-        )
+    private var userAdapter = UserAdapter()
+
+    private fun initRecyclerView() {
+        recyclerView.apply {
+            layoutManager = CarouselLayoutManager(CarouselLayoutManager.VERTICAL)
+                    .apply { setPostLayoutListener(CarouselZoomPostLayoutListener()) }
+            addOnScrollListener(CenterScrollListener())
+            userAdapter.bindToRecyclerView(this)
+        }
     }
 
 }

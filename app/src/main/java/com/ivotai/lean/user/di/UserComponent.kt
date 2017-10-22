@@ -7,6 +7,6 @@ import dagger.Subcomponent
 @Subcomponent(modules = arrayOf(UserModule::class))
 interface UserComponent {
 
-    fun getApi(): ViewModelFactory
+    fun getViewModelFactory(): ViewModelFactory
 
 }

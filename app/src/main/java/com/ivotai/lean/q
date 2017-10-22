@@ -1,3 +1,13 @@
-onSubscribe
 factory
+
 databinding in adapter
+
+p 顿卡
+
+diffutil
+
+// test
+ViewModel 旋转后只还在，缓存还在
+
+// test
+LiveData
