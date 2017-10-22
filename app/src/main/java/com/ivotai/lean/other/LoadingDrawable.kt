@@ -1,4 +1,4 @@
-package com.ivotai.lean.user.other
+package com.ivotai.lean.other
 
 import android.content.res.Resources
 import android.graphics.drawable.AnimationDrawable

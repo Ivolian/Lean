@@ -1,4 +1,4 @@
-package com.ivotai.lean.user.other
+package com.ivotai.lean.other
 
 import android.arch.lifecycle.Lifecycle
 import android.arch.lifecycle.LifecycleObserver
@@ -18,7 +18,7 @@ class LoadingView : FrameLayout, LifecycleObserver {
     constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 //    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int, defStyleRes: Int) : super(context, attrs, defStyleAttr, defStyleRes)
 
-    private var isLoading = false
+    private var needRecover = false
     private lateinit var loadingDrawable: LoadingDrawable
 
     override fun onFinishInflate() {
@@ -28,27 +28,25 @@ class LoadingView : FrameLayout, LifecycleObserver {
         loadingDrawable = LoadingDrawable(resources).apply {
             findViewById<ImageView>(R.id.ivLoading).setImageDrawable(this)
         }
+        visibility = View.INVISIBLE
     }
 
-    fun startAnim(lifecycle: Lifecycle) {
+    fun show(lifecycle: Lifecycle) {
         lifecycle.addObserver(this)
         loadingDrawable.start()
-        isLoading = true
+        visibility = View.VISIBLE
+        needRecover = true
     }
 
-    fun stopAnim() {
+    fun hide() {
         loadingDrawable.stop()
-        isLoading = false
-    }
-
-    fun finishAnim(){
-        stopAnim()
-        visibility = View.GONE
+        visibility = View.INVISIBLE
+        needRecover = false
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_RESUME)
     fun onResume() {
-        if (isLoading) {
+        if (needRecover) {
             loadingDrawable.start()
         }
     }

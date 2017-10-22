@@ -17,8 +17,6 @@ import kotlinx.android.synthetic.main.act_user.*
 
 class UserAct : AppCompatActivity() {
 
-    private lateinit var userViewModel: UserViewModel
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.act_user)
@@ -29,21 +27,17 @@ class UserAct : AppCompatActivity() {
         }
 
         // getViewModel
-        userViewModel = ViewModelProviders
-                .of(this, ComponentsHolder.userComponent.getViewModelFactory())
+        val userViewModel = ViewModelProviders.of(this, ComponentsHolder.userComponent.getViewModelFactory())
                 .get(UserViewModel::class.java)
-
 
         // init view
         initRecyclerView()
 
-        loadingView.startAnim(lifecycle)
+        loadingView.show(lifecycle)
         userViewModel.getUsers().observe(this, Observer {
             userAdapter.setNewData(it)
-            loadingView.finishAnim()
+            loadingView.hide()
         })
-
-        userAdapter.setOnItemClickListener { _, _, _ -> ToastUtils.showLong("ss") }
     }
 
 
@@ -55,6 +49,7 @@ class UserAct : AppCompatActivity() {
                     .apply { setPostLayoutListener(CarouselZoomPostLayoutListener()) }
             addOnScrollListener(CenterScrollListener())
             userAdapter.bindToRecyclerView(this)
+            userAdapter.setOnItemClickListener { _, _, _ -> ToastUtils.showLong("ss") }
         }
     }
 
