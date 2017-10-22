@@ -57,6 +57,7 @@ dependencies {
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
 
     implementation "android.arch.lifecycle:extensions:1.0.0-rc1"
+    compile 'com.zzhoujay.materialcolors:materialcolors:1.0.0'
 }
 
 androidExtensions {
