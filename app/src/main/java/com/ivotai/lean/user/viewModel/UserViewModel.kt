@@ -1,7 +1,6 @@
 package com.ivotai.lean.user.viewModel
 
 import android.arch.lifecycle.ViewModel
-import com.ivotai.lean.user.User
 import com.ivotai.lean.user.api.UserApi
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers

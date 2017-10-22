@@ -1,6 +1,6 @@
 package com.ivotai.lean.user.api
 
-import com.ivotai.lean.user.User
+import com.ivotai.lean.user.viewModel.User
 import io.reactivex.Observable
 import retrofit2.http.GET
 

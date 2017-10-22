@@ -1,4 +1,4 @@
-package com.ivotai.lean.user
+package com.ivotai.lean.user.viewModel
 
 data class User(
 		val id: Int, //1
