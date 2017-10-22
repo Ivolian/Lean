@@ -11,14 +11,13 @@ import io.reactivex.schedulers.Schedulers
 
 class UserAct : AppCompatActivity() {
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-
         val api = ComponentsHolder.userComponent.getApi()
-        api.getAll().observeOn(AndroidSchedulers.mainThread())
+        api.getAll()
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(
                       object:  Observer<List<User>> {
