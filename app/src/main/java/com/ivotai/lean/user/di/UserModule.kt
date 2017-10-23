@@ -1,7 +1,7 @@
 package com.ivotai.lean.user.di
 
 import com.ivotai.lean.user.api.UserApi
-import com.ivotai.lean.user.viewModel.ViewModelFactory
+import com.ivotai.lean.user.viewModel.UserViewModelFactory
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -15,6 +15,6 @@ class UserModule {
 
     @UserScope
     @Provides
-    fun viewModelFactory(userApi: UserApi): ViewModelFactory = ViewModelFactory(userApi)
+    fun viewModelFactory(userApi: UserApi): UserViewModelFactory = UserViewModelFactory(userApi)
 
 }

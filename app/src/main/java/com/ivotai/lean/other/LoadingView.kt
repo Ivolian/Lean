@@ -31,8 +31,7 @@ class LoadingView : FrameLayout, LifecycleObserver {
         visibility = View.INVISIBLE
     }
 
-    fun show(lifecycle: Lifecycle) {
-        lifecycle.addObserver(this)
+    fun show() {
         loadingDrawable.start()
         visibility = View.VISIBLE
         needRecover = true

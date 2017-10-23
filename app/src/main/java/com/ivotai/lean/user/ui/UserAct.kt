@@ -25,7 +25,6 @@ class UserAct : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
-
         // getViewModel
         val userViewModel = ViewModelProviders.of(this, ComponentsHolder.userComponent.getViewModelFactory())
                 .get(UserViewModel::class.java)
@@ -33,10 +32,12 @@ class UserAct : AppCompatActivity() {
         // init view
         initRecyclerView()
 
-        loadingView.show(lifecycle)
-        userViewModel.getUsers().observe(this, Observer {
+        lifecycle.addObserver(loadingView)
+        userViewModel.isLoading.observe(this, Observer {
+                    if (it == true) loadingView.show() else loadingView.hide()
+        })
+        userViewModel.users.observe(this, Observer {
             userAdapter.setNewData(it)
-            loadingView.hide()
         })
     }
 
