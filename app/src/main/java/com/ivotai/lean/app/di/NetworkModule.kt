@@ -20,7 +20,7 @@ class NetworkModule {
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
 
-    private val baseUrl = "http://192.168.1.5:8080/demo/"
+    private val baseUrl = "http://192.168.1.5:8090/lean/"
 
     @AppScope
     @Provides

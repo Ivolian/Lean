@@ -6,7 +6,7 @@ import retrofit2.http.GET
 
 interface UserApi {
 
-    @GET("all")
+    @GET("user/all")
     fun all(): Single<List<User>>
 
 }
