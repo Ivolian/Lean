@@ -13,7 +13,6 @@ import com.blankj.utilcode.util.ToastUtils
 import com.ivotai.lean.R
 import com.ivotai.lean.app.di.ComponentsHolder
 import com.ivotai.lean.user.viewModel.UserViewModel
-import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.act_user.*
 
 class UserAct : AppCompatActivity() {
@@ -34,16 +33,22 @@ class UserAct : AppCompatActivity() {
         initRecyclerView()
         lifecycle.addObserver(loadingView)
 
-
-        userViewModel.isLoading.observe(this, Observer {
-            Logger.e("isLoading change:" + it)
-
-            if (it == true) loadingView.show() else loadingView.hide()
+        userViewModel.getUsers().observe(this, Observer { resources ->
+            if (resources == null) {
+                return@Observer
+            }
+            if (resources.isLoading()) {
+                loadingView.show()
+            }
+            if (resources.isError()) {
+                loadingView.hide()
+            }
+            if (resources.isSuccess()) {
+                loadingView.hide()
+                userAdapter.setNewData(resources.data)
+            }
         })
-        userViewModel.users.observe(this, Observer {
-//            Logger.e("users change")
-            userAdapter.setNewData(it)
-        })
+        userViewModel.getUsers()
     }
 
 
