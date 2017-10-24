@@ -10,7 +10,7 @@ import com.kakai.android.autoviewmodelfactory.annotations.AutoViewModelFactory
 class UserViewModel(private val userRepo: UserRepo) : ViewModel() {
 
     fun getUsers(): MutableLiveData<Resource<List<User>>> {
-        return userRepo.usersResource
+        return userRepo.network
     }
 
 }

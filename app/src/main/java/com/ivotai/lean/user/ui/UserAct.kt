@@ -2,6 +2,7 @@ package com.ivotai.lean.user.ui
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -9,7 +10,7 @@ import android.view.View
 import com.azoft.carousellayoutmanager.CarouselLayoutManager
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener
 import com.azoft.carousellayoutmanager.CenterScrollListener
-import com.blankj.utilcode.util.ToastUtils
+import com.ivotai.lean.LeakAct
 import com.ivotai.lean.R
 import com.ivotai.lean.app.di.ComponentsHolder
 import com.ivotai.lean.user.viewModel.UserViewModel
@@ -49,6 +50,7 @@ class UserAct : AppCompatActivity() {
             }
         })
         userViewModel.getUsers()
+
     }
 
 
@@ -60,7 +62,9 @@ class UserAct : AppCompatActivity() {
                     .apply { setPostLayoutListener(CarouselZoomPostLayoutListener()) }
             addOnScrollListener(CenterScrollListener())
             userAdapter.bindToRecyclerView(this)
-            userAdapter.setOnItemClickListener { _, _, _ -> ToastUtils.showLong("ss") }
+            userAdapter.setOnItemClickListener { _, _, _ ->
+                startActivity(Intent(this@UserAct, LeakAct::class.java))
+            }
         }
     }
 
