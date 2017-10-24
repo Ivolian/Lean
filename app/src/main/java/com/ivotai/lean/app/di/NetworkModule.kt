@@ -20,7 +20,7 @@ class NetworkModule {
             .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
             .build()
 
-    private val baseUrl = "http://192.168.1.5:8090/lean/"
+    private val baseUrl = "http://ivotai.nat300.top/lean/"
 
     @AppScope
     @Provides
