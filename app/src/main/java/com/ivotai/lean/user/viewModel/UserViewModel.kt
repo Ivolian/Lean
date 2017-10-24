@@ -8,7 +8,8 @@ import com.ivotai.lean.user.repo.UserRepo
 class UserViewModel(private val userRepo: UserRepo) : ViewModel() {
 
     fun getUsers(): MutableLiveData<Resource<List<User>>> {
-        return userRepo.local
+        userRepo.load()
+        return userRepo.users
     }
 
 }

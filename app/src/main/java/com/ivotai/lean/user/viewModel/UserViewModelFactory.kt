@@ -8,6 +8,7 @@ import com.ivotai.lean.user.repo.UserRepo
 
 import javax.inject.Inject
 
+@Suppress("UNCHECKED_CAST")
 @UserScope
 class UserViewModelFactory @Inject constructor(private val userRepo: UserRepo) : ViewModelProvider.Factory {
 

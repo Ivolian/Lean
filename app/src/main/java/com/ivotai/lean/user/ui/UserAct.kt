@@ -10,6 +10,7 @@ import android.view.View
 import com.azoft.carousellayoutmanager.CarouselLayoutManager
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener
 import com.azoft.carousellayoutmanager.CenterScrollListener
+import com.blankj.utilcode.util.ToastUtils
 import com.ivotai.lean.LeakAct
 import com.ivotai.lean.R
 import com.ivotai.lean.app.di.ComponentsHolder
@@ -35,9 +36,8 @@ class UserAct : AppCompatActivity() {
         lifecycle.addObserver(loadingView)
 
         userViewModel.getUsers().observe(this, Observer { resources ->
-            if (resources == null) {
-                return@Observer
-            }
+            resources!!
+            ToastUtils.showShort(resources.message)
             if (resources.isLoading()) {
                 loadingView.show()
             }
@@ -49,10 +49,7 @@ class UserAct : AppCompatActivity() {
                 userAdapter.setNewData(resources.data)
             }
         })
-
-
     }
-
 
     private var userAdapter = UserAdapter()
 

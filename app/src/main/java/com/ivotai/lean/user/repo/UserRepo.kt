@@ -1,6 +1,7 @@
 package com.ivotai.lean.user.repo
 
 import android.arch.lifecycle.MediatorLiveData
+import android.arch.lifecycle.MutableLiveData
 import com.ivotai.lean.other.Resource
 import com.ivotai.lean.other.Status
 import com.ivotai.lean.user.api.UserApi
@@ -15,49 +16,58 @@ import java.util.concurrent.TimeUnit
 class UserRepo(private val userBox: Box<User>, private val userApi: UserApi) {
 
     val users = MediatorLiveData<Resource<List<User>>>()
-        get() = field.apply {
-            addSource(local,{
-                value = it
 
-            })
+    fun load() = users.apply {
+        userBox.removeAll()
 
-        }
-
-
-    val local = MediatorLiveData<Resource<List<User>>>()
-        get() = field.apply {
-            val query = userBox.query().build()
-            RxQuery.observable(query)
-                    .delay(1, TimeUnit.SECONDS)
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(
-                            {
-                                value = Resource(Status.Success, it)
-                            },
-                            {
-                                value = Resource(Status.Error)
-                            }
-                    )
-        }
-
-    val network = MediatorLiveData<Resource<List<User>>>()
-        get() = field.apply {
-            if (value == null) {
-                value = Resource(Status.Loading)
-                userApi.all()
-                        // 模拟读取数据
-                        .delay(3, TimeUnit.SECONDS)
-                        .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribe(
-                                {
-                                    value = Resource(Status.Success, it)
-                                    userBox.put(it)
-                                },
-                                { value = Resource(Status.Error) }
-                        )
+        value = Resource(Status.Loading, "loading from db")
+        val dbSource = loadFromDb()
+        addSource(dbSource, { users ->
+            users!!
+            removeSource(dbSource)
+            if (!users.isEmpty()) {
+                value = Resource(Status.Success, "load finish from db", users)
+            } else {
+                addNetworkSource()
             }
-        }
+        })
+    }
+
+    private fun addNetworkSource() = users.apply {
+        val networkSource = fetchFromNetwork()
+        addSource(networkSource, { resource ->
+            value = resource!!
+            if (!resource.isLoading()) {
+                removeSource(networkSource)
+            }
+        })
+    }
+
+    private fun loadFromDb() = MutableLiveData<List<User>>().apply {
+        val query = userBox.query().build()
+        RxQuery.observable(query)
+                .delay(2, TimeUnit.SECONDS)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { value = it },
+                        { com.orhanobut.logger.Logger.e(it, "") }
+                )
+    }
+
+    private fun fetchFromNetwork() = MutableLiveData<Resource<List<User>>>().apply {
+        value = Resource(Status.Loading, "loading from network")
+        userApi.all()
+                // 模拟读取数据
+                .delay(3, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        {
+                            value = Resource(Status.Success, "network", it)
+                            userBox.put(it)
+                        },
+                        { value = Resource(Status.Error, "network") }
+                )
+    }
 
 }
