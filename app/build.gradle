@@ -64,6 +64,10 @@ dependencies {
     compile 'io.objectbox:objectbox-rxjava:0.9.8-RC4'
     debugCompile "io.objectbox:objectbox-android-objectbrowser:$objectboxVersion"
     releaseCompile "io.objectbox:objectbox-android:$objectboxVersion"
+
+    compile('com.github.ihsanbal:LoggingInterceptor:2.0.3') {
+        exclude group: 'org.json', module: 'json'
+    }
 }
 
 apply plugin: 'io.objectbox'

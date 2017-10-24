@@ -1,12 +1,19 @@
 package com.ivotai.lean.app.base
 
-class Resource<out T>(private val status: Status, val message: String, val data: T?) {
+data class Resource<out T>(private val status: Status, val source: Source, val data: T?, val error: Throwable?) {
 
-    constructor(status: Status, message: String) : this(status, message, null)
+    constructor(status: Status, source: Source)
+            : this(status, source, data= null)
 
-    fun isLoading() = this.status == Status.Loading
-    fun isSuccess() = this.status == Status.Success
-    fun isError() = this.status == Status.Error
+    constructor(status: Status, source: Source, data: T?)
+            : this(status, source, data, null)
+
+    constructor(status: Status, source: Source, error: Throwable?)
+            : this(status, source, null, error)
+
+    fun isLoading() = this.status == Status.LOADING
+    fun isSuccess() = this.status == Status.SUCCESS
+    fun isError() = this.status == Status.ERROR
 
 }
 

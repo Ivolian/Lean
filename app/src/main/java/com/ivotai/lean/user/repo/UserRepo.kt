@@ -3,6 +3,7 @@ package com.ivotai.lean.user.repo
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
 import com.ivotai.lean.app.base.Resource
+import com.ivotai.lean.app.base.Source
 import com.ivotai.lean.app.base.Status
 import com.ivotai.lean.user.api.UserApi
 import com.ivotai.lean.user.viewModel.User
@@ -17,31 +18,26 @@ class UserRepo(private val userBox: Box<User>, private val userApi: UserApi) {
 
     val users = MediatorLiveData<Resource<List<User>>>()
 
-
-    fun load() = users.apply {
-        if (value != null) {
-            return@apply
+     fun getUser()=
+         users.apply {
+            userBox.removeAll()
+            if (value != null) {
+                return@apply
+            }
+            watchDbSource()
         }
 
-        value = Resource(Status.Loading, "loading from db")
+
+    private fun watchDbSource() = with(users) {
+        value = Resource(Status.LOADING, Source.DB)
         val dbSource = loadFromDb()
         addSource(dbSource, { users ->
             users!!
             removeSource(dbSource)
             if (!users.isEmpty()) {
-                value = Resource(Status.Success, "load finish from db", users)
+                value = Resource(Status.SUCCESS, Source.DB, users)
             } else {
-                addNetworkSource()
-            }
-        })
-    }
-
-    private fun addNetworkSource() = users.apply {
-        val networkSource = fetchFromNetwork()
-        addSource(networkSource, { resource ->
-            value = resource!!
-            if (!resource.isLoading()) {
-                removeSource(networkSource)
+                watchNetworkSource()
             }
         })
     }
@@ -57,8 +53,18 @@ class UserRepo(private val userBox: Box<User>, private val userApi: UserApi) {
                 )
     }
 
+    private fun watchNetworkSource() = users.apply {
+        val networkSource = fetchFromNetwork()
+        addSource(networkSource, { resource ->
+            value = resource!!
+            if (!resource.isLoading()) {
+                removeSource(networkSource)
+            }
+        })
+    }
+
     private fun fetchFromNetwork() = MutableLiveData<Resource<List<User>>>().apply {
-        value = Resource(Status.Loading, "loading from network")
+        value = Resource(Status.LOADING, Source.NETWORK)
         userApi.all()
                 // 模拟读取数据
                 .delay(3, TimeUnit.SECONDS)
@@ -66,10 +72,11 @@ class UserRepo(private val userBox: Box<User>, private val userApi: UserApi) {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         {
-                            value = Resource(Status.Success, "network", it)
+                            value = Resource(Status.SUCCESS, Source.NETWORK, it)
+                            // 持久化
                             userBox.put(it)
                         },
-                        { value = Resource(Status.Error, it.message ?: "network") }
+                        { value = Resource(Status.ERROR, Source.NETWORK, it) }
                 )
     }
 

@@ -14,6 +14,7 @@ import com.ivotai.lean.LeakAct
 import com.ivotai.lean.R
 import com.ivotai.lean.app.di.ComponentsHolder
 import com.ivotai.lean.user.viewModel.UserViewModel
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.act_user.*
 import kotlinx.android.synthetic.main.retry_view.*
 
@@ -38,6 +39,7 @@ class UserAct : AppCompatActivity() {
 
         userViewModel.getUsers().observe(this, Observer { resources ->
             resources!!
+            Logger.d(resources)
             if (resources.isLoading()) {
                 loadingView.show()
                 retryView.hide()
