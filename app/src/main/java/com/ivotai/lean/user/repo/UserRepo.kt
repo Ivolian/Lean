@@ -16,19 +16,17 @@ import java.util.concurrent.TimeUnit
 
 class UserRepo(private val userBox: Box<User>, private val userApi: UserApi) {
 
-    val users = MediatorLiveData<Resource<List<User>>>()
+    private val users = MediatorLiveData<Resource<List<User>>>()
 
-     fun getUser()=
-         users.apply {
-            userBox.removeAll()
-            if (value != null) {
-                return@apply
-            }
-            watchDbSource()
+    fun loadUsers() = users.apply {
+        userBox.removeAll()
+        if (value != null) {
+            return@apply
         }
+        watchDbSource()
+    }
 
-
-    private fun watchDbSource() = with(users) {
+    private fun watchDbSource() = users.apply{
         value = Resource(Status.LOADING, Source.DB)
         val dbSource = loadFromDb()
         addSource(dbSource, { users ->
@@ -45,6 +43,7 @@ class UserRepo(private val userBox: Box<User>, private val userApi: UserApi) {
     private fun loadFromDb() = MutableLiveData<List<User>>().apply {
         val query = userBox.query().build()
         RxQuery.observable(query)
+                // 模拟读取数据
                 .delay(2, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
