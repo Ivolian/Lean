@@ -66,7 +66,7 @@ class UserRepo(private val userBox: Box<User>, private val userApi: UserApi) {
                             value = Resource(Status.Success, "network", it)
                             userBox.put(it)
                         },
-                        { value = Resource(Status.Error, "network") }
+                        { value = Resource(Status.Error, it.message ?: "network") }
                 )
     }
 

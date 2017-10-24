@@ -10,12 +10,12 @@ import android.view.View
 import com.azoft.carousellayoutmanager.CarouselLayoutManager
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener
 import com.azoft.carousellayoutmanager.CenterScrollListener
-import com.blankj.utilcode.util.ToastUtils
 import com.ivotai.lean.LeakAct
 import com.ivotai.lean.R
 import com.ivotai.lean.app.di.ComponentsHolder
 import com.ivotai.lean.user.viewModel.UserViewModel
 import kotlinx.android.synthetic.main.act_user.*
+import kotlinx.android.synthetic.main.retry_view.*
 
 class UserAct : AppCompatActivity() {
 
@@ -34,18 +34,21 @@ class UserAct : AppCompatActivity() {
         // init view
         initRecyclerView()
         lifecycle.addObserver(loadingView)
+        tvRetry.setOnClickListener { userViewModel.getUsers() }
 
         userViewModel.getUsers().observe(this, Observer { resources ->
             resources!!
-            ToastUtils.showShort(resources.message)
             if (resources.isLoading()) {
                 loadingView.show()
+                retryView.hide()
             }
             if (resources.isError()) {
                 loadingView.hide()
+                retryView.show()
             }
             if (resources.isSuccess()) {
                 loadingView.hide()
+                retryView.hide()
                 userAdapter.setNewData(resources.data)
             }
         })
