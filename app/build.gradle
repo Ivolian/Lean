@@ -32,8 +32,6 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile "com.github.kakai248.AutoViewModelFactory:annotations:0.1.2"
-    kapt "com.github.kakai248.AutoViewModelFactory:processor:0.1.2"
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
     implementation "com.android.support:appcompat-v7:$support_version"
@@ -63,7 +61,7 @@ dependencies {
     compile 'com.blankj:utilcode:1.9.3'
     compile 'com.orhanobut:logger:2.1.1'
     compile 'com.squareup.leakcanary:leakcanary-android:1.5.4'
-
+    compile 'io.objectbox:objectbox-rxjava:0.9.8-RC4'
     debugCompile "io.objectbox:objectbox-android-objectbrowser:$objectboxVersion"
     releaseCompile "io.objectbox:objectbox-android:$objectboxVersion"
 }

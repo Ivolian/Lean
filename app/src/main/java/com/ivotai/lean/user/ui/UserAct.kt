@@ -49,7 +49,7 @@ class UserAct : AppCompatActivity() {
                 userAdapter.setNewData(resources.data)
             }
         })
-        userViewModel.getUsers()
+
 
     }
 
