@@ -2,8 +2,8 @@ package com.ivotai.lean.user.repo
 
 import android.arch.lifecycle.MediatorLiveData
 import android.arch.lifecycle.MutableLiveData
-import com.ivotai.lean.other.Resource
-import com.ivotai.lean.other.Status
+import com.ivotai.lean.app.base.Resource
+import com.ivotai.lean.app.base.Status
 import com.ivotai.lean.user.api.UserApi
 import com.ivotai.lean.user.viewModel.User
 import io.objectbox.Box
@@ -17,8 +17,11 @@ class UserRepo(private val userBox: Box<User>, private val userApi: UserApi) {
 
     val users = MediatorLiveData<Resource<List<User>>>()
 
+
     fun load() = users.apply {
-        userBox.removeAll()
+        if (value != null) {
+            return@apply
+        }
 
         value = Resource(Status.Loading, "loading from db")
         val dbSource = loadFromDb()

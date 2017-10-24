@@ -1,4 +1,4 @@
-package com.ivotai.lean.other
+package com.ivotai.lean.app.base
 
 enum class Status {
     Loading,

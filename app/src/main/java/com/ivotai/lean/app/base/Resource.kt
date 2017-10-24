@@ -1,4 +1,4 @@
-package com.ivotai.lean.other
+package com.ivotai.lean.app.base
 
 class Resource<out T>(private val status: Status, val message: String, val data: T?) {
 
@@ -7,6 +7,7 @@ class Resource<out T>(private val status: Status, val message: String, val data:
     fun isLoading() = this.status == Status.Loading
     fun isSuccess() = this.status == Status.Success
     fun isError() = this.status == Status.Error
+
 }
 
 
