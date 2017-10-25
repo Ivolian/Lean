@@ -1,4 +1,4 @@
-package com.ivotai.lean.tie
+package com.ivotai.lean.tie.api
 
 import com.ivotai.lean.tie.dto.TieWrapper
 import io.reactivex.Single

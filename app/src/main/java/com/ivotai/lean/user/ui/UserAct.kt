@@ -12,30 +12,17 @@ import com.azoft.carousellayoutmanager.CenterScrollListener
 import com.ivotai.lean.LeakAct
 import com.ivotai.lean.R
 import com.ivotai.lean.app.di.ComponentsHolder
-import com.ivotai.lean.tie.Tie
-import com.ivotai.lean.tie.TieApi
-import com.ivotai.lean.tie.dto.TieWrapper
-import com.ivotai.lean.user.viewModel.User
 import com.ivotai.lean.user.viewModel.UserViewModel
+import com.ivotai.lean.user.viewModel.UserViewModelFactory
 import com.orhanobut.logger.Logger
-import io.objectbox.Box
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.act_user.*
 import kotlinx.android.synthetic.main.retry_view.*
-import java.util.*
 import javax.inject.Inject
 
 class UserAct : AppCompatActivity() {
 
     @Inject
-    lateinit var tieBox: Box<Tie>
-
-    @Inject
-    lateinit var userBox: Box<User>
-
-    @Inject
-    lateinit var tieApi: TieApi
+    lateinit var factory: UserViewModelFactory
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,8 +32,10 @@ class UserAct : AppCompatActivity() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
+
         // getViewModel
-        val userViewModel = ViewModelProviders.of(this, ComponentsHolder.userComponent.getViewModelFactory())
+        ComponentsHolder.userComponent.inject(this)
+        val userViewModel = ViewModelProviders.of(this, factory)
                 .get(UserViewModel::class.java)
 
         // init view
@@ -69,31 +58,18 @@ class UserAct : AppCompatActivity() {
                 loadingView.hide()
                 retryView.hide()
                 userAdapter.setNewData(resources.data)
-                Logger.d(resources!!.data!![0])
             }
 
         })
-        ComponentsHolder.userComponent.inject(this)
 
-        val tie = Tie()
-        tie.id = 1
-        tie.thumbCount = 1
-        tie.pic = ""
-        tie.content = "测试"
-        tie.createTime = Date()
-        tie.poster.target = userBox.get(1)
-        tieBox.put(tie)
-
-        Logger.d(tieBox.get(1).content)
-
-        tieApi.all()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .map { wrappers ->
-                    Logger.d(wrappers)
-                    wrappers.map { wrapper -> TieWrapper.toTie(wrapper) }
-                }
-                .subscribe({ it }, { it })
+//        tieApi.all()
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .map { wrappers ->
+//                    Logger.d(wrappers)
+//                    wrappers.map { wrapper -> TieWrapper.toTie(wrapper) }
+//                }
+//                .subscribe({ it }, { it })
     }
 
     private var userAdapter = UserAdapter()

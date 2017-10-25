@@ -1,4 +1,4 @@
-package com.ivotai.lean.tie
+package com.ivotai.lean.tie.po
 
 import com.ivotai.lean.user.viewModel.User
 import io.objectbox.annotation.Entity
