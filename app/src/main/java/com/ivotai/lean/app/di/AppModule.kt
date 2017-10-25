@@ -3,7 +3,7 @@ package com.ivotai.lean.app.di
 import android.content.Context
 import com.ivotai.lean.BuildConfig
 import com.ivotai.lean.app.App
-import com.ivotai.lean.user.viewModel.MyObjectBox
+import com.ivotai.lean.tie.MyObjectBox
 import dagger.Module
 import dagger.Provides
 import io.objectbox.BoxStore

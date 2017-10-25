@@ -1,5 +1,7 @@
 package com.ivotai.lean.app.di
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import com.ihsanbal.logging.Level
 import com.ihsanbal.logging.LoggingInterceptor
 import com.ivotai.lean.BuildConfig
@@ -31,14 +33,24 @@ class NetworkModule {
             )
             .build()
 
-    private val baseUrl = "http://ivotai.nat300.top/lean/"
+    companion object {
+        //        val baseUrl = "http://ivotai.nat300.top/lean/"
+        val baseUrl = "http://192.168.1.5:8080/"
+
+    }
 
     @AppScope
     @Provides
-    fun retrofit(client: OkHttpClient): Retrofit = Retrofit.Builder()
+    fun gson(): Gson = GsonBuilder()
+
+            .create()
+
+    @AppScope
+    @Provides
+    fun retrofit(client: OkHttpClient, gson: Gson): Retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(client)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()
 

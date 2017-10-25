@@ -19,7 +19,7 @@ class UserRepo(private val userBox: Box<User>, private val userApi: UserApi) {
     private val users = MediatorLiveData<Resource<List<User>>>()
 
     fun loadUsers() = users.apply {
-        userBox.removeAll()
+//        userBox.removeAll()
         if (value != null) {
             return@apply
         }

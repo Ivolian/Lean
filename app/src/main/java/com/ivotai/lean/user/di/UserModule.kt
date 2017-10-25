@@ -1,5 +1,7 @@
 package com.ivotai.lean.user.di
 
+import com.ivotai.lean.tie.Tie
+import com.ivotai.lean.tie.TieApi
 import com.ivotai.lean.user.api.UserApi
 import com.ivotai.lean.user.repo.UserRepo
 import com.ivotai.lean.user.viewModel.User
@@ -22,7 +24,17 @@ class UserModule {
 
     @UserScope
     @Provides
-    fun userRepo(api: UserApi,box:Box<User>): UserRepo = UserRepo(box,api)
+    fun userRepo(api: UserApi, box: Box<User>): UserRepo = UserRepo(box, api)
+
+
+    @UserScope
+    @Provides
+    fun tieApi(retrofit: Retrofit): TieApi = retrofit.create(TieApi::class.java)
+
+    @UserScope
+    @Provides
+    fun tieBox(boxStore: BoxStore): Box<Tie> = boxStore.boxFor(Tie::class.java)
+
 
 //    @UserScope
 //    @Provides

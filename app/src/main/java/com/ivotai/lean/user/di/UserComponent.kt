@@ -1,5 +1,6 @@
 package com.ivotai.lean.user.di
 
+import com.ivotai.lean.user.ui.UserAct
 import com.ivotai.lean.user.viewModel.UserViewModelFactory
 import dagger.Subcomponent
 
@@ -8,5 +9,6 @@ import dagger.Subcomponent
 interface UserComponent {
 
     fun getViewModelFactory(): UserViewModelFactory
+    fun inject(o: UserAct)
 
 }
