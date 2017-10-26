@@ -1,7 +1,6 @@
 package com.ivotai.lean.user.ui
 
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -9,12 +8,14 @@ import android.view.View
 import com.azoft.carousellayoutmanager.CarouselLayoutManager
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener
 import com.azoft.carousellayoutmanager.CenterScrollListener
-import com.ivotai.lean.LeakAct
 import com.ivotai.lean.R
 import com.ivotai.lean.app.di.ComponentsHolder
+import com.ivotai.lean.tie.repo.TieRepo
+import com.ivotai.lean.user.viewModel.User
 import com.ivotai.lean.user.viewModel.UserViewModel
 import com.ivotai.lean.user.viewModel.UserViewModelFactory
 import com.orhanobut.logger.Logger
+import io.objectbox.Box
 import kotlinx.android.synthetic.main.act_user.*
 import kotlinx.android.synthetic.main.retry_view.*
 import javax.inject.Inject
@@ -23,6 +24,12 @@ class UserAct : AppCompatActivity() {
 
     @Inject
     lateinit var factory: UserViewModelFactory
+
+    @Inject
+    lateinit var tieRepo:TieRepo
+
+    @Inject
+    lateinit var userBox: Box<User>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,14 +69,6 @@ class UserAct : AppCompatActivity() {
 
         })
 
-//        tieApi.all()
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-//                .map { wrappers ->
-//                    Logger.d(wrappers)
-//                    wrappers.map { wrapper -> TieWrapper.toTie(wrapper) }
-//                }
-//                .subscribe({ it }, { it })
     }
 
     private var userAdapter = UserAdapter()
@@ -81,7 +80,6 @@ class UserAct : AppCompatActivity() {
             addOnScrollListener(CenterScrollListener())
             userAdapter.bindToRecyclerView(this)
             userAdapter.setOnItemClickListener { _, _, _ ->
-                startActivity(Intent(this@UserAct, LeakAct::class.java))
             }
         }
     }
