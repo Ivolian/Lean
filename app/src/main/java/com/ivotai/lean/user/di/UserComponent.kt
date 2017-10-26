@@ -1,5 +1,6 @@
 package com.ivotai.lean.user.di
 
+import com.ivotai.lean.tie.ui.TieAct
 import com.ivotai.lean.user.ui.UserAct
 import dagger.Subcomponent
 
@@ -8,5 +9,6 @@ import dagger.Subcomponent
 interface UserComponent {
 
     fun inject(o: UserAct)
+    fun inject(o: TieAct)
 
 }

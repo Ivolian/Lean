@@ -35,15 +35,14 @@ class NetworkModule {
 
     companion object {
         //        val baseUrl = "http://ivotai.nat300.top/lean/"
-        val baseUrl = "http://192.168.1.5:8080/"
+//        val baseUrl = "http://192.168.1.5:8080/"
+        val baseUrl = "http://192.168.1.5:8090/lean/"
 
     }
 
     @AppScope
     @Provides
-    fun gson(): Gson = GsonBuilder()
-
-            .create()
+    fun gson(): Gson = GsonBuilder().create()
 
     @AppScope
     @Provides

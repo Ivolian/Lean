@@ -1,0 +1,12 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="600dp">
+
+    <ImageView xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/ivAvatar"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_gravity="center"
+        tools:ignore="ContentDescription" />
+
+</FrameLayout>
