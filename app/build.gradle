@@ -8,7 +8,7 @@ android {
     buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.ivotai.lean"
-        minSdkVersion 15
+        minSdkVersion 17
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -31,7 +31,7 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.1', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0-beta3'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
 
     implementation "com.android.support:appcompat-v7:$support_version"
@@ -48,8 +48,8 @@ dependencies {
     implementation(["com.squareup.retrofit2:retrofit:$retrofit_version",
                     "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version",
                     "com.squareup.retrofit2:converter-gson:$retrofit_version",
-                    "com.squareup.okhttp3:okhttp:$okhttp_version",
-                    "com.squareup.okhttp3:logging-interceptor:$okhttp_version"])
+                    "com.squareup.okhttp3:okhttp:$okhttp_version"
+    ])
 
     implementation "com.google.dagger:dagger:$dagger_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
@@ -64,10 +64,11 @@ dependencies {
     compile 'io.objectbox:objectbox-rxjava:0.9.8-RC4'
     debugCompile "io.objectbox:objectbox-android-objectbrowser:$objectboxVersion"
     releaseCompile "io.objectbox:objectbox-android:$objectboxVersion"
-
+    compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
     compile('com.github.ihsanbal:LoggingInterceptor:2.0.3') {
         exclude group: 'org.json', module: 'json'
     }
+    compile 'com.makeramen:roundedimageview:2.3.0'
 }
 
 apply plugin: 'io.objectbox'

@@ -35,3 +35,5 @@
 -keepclassmembers  class **$** extends com.chad.library.adapter.base.BaseViewHolder {
      <init>(...);
 }
+#
+-keep class org.ocpsoft.prettytime.i18n.**

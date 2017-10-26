@@ -13,7 +13,6 @@ import io.objectbox.Box
 import io.objectbox.rx.RxQuery
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @UserScope
@@ -46,7 +45,7 @@ class TieRepo @Inject constructor(val tieApi: TieApi, val tieBox: Box<Tie>) {
         val query = tieBox.query().build()
         RxQuery.observable(query)
                 // 模拟读取数据
-                .delay(2, TimeUnit.SECONDS)
+//                .delay(2, TimeUnit.SECONDS)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(
                         { value = it },
@@ -68,7 +67,7 @@ class TieRepo @Inject constructor(val tieApi: TieApi, val tieBox: Box<Tie>) {
         value = Resource(Status.LOADING, Source.NETWORK)
         tieApi.all()
 //                // 模拟读取数据
-                .delay(3, TimeUnit.SECONDS)
+//                .delay(3, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map { wrappers -> wrappers.map { TieWrapper.toTie(it) } }

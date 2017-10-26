@@ -22,7 +22,7 @@ class TieAct : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.act_user)
+        setContentView(R.layout.act_tie)
 
         // 白底黑字
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
