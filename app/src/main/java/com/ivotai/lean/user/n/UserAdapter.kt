@@ -1,4 +1,4 @@
-package com.ivotai.lean.user.ui
+package com.ivotai.lean.user.n
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide
@@ -6,7 +6,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.BaseViewHolder
 import com.ivotai.lean.R
 import com.ivotai.lean.app.di.NetworkModule
-import com.ivotai.lean.user.viewModel.User
+import com.ivotai.lean.user.po.User
 
 class UserAdapter : BaseQuickAdapter<User, BaseViewHolder>(R.layout.item_user) {
 

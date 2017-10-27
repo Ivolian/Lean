@@ -1,4 +1,4 @@
-package com.ivotai.lean.user.viewModel
+package com.ivotai.lean.user.po
 
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id

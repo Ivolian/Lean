@@ -1,6 +1,6 @@
 package com.ivotai.lean.tie.po
 
-import com.ivotai.lean.user.viewModel.User
+import com.ivotai.lean.user.po.User
 import io.objectbox.annotation.Entity
 import io.objectbox.annotation.Id
 import io.objectbox.relation.ToOne

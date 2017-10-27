@@ -16,9 +16,10 @@ import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 @UserScope
-class TieRepo @Inject constructor(val tieApi: TieApi, val tieBox: Box<Tie>) {
+class TieRepo @Inject constructor(private val tieApi: TieApi, private val tieBox: Box<Tie>) {
 
     private val ties = MediatorLiveData<Resource<List<Tie>>>()
+
 
     fun loadTies() = ties.apply {
         if (value != null && value!!.isSuccess()) {

@@ -1,7 +1,7 @@
 package com.ivotai.lean.tie.dto
 
 import com.ivotai.lean.tie.po.Tie
-import com.ivotai.lean.user.viewModel.User
+import com.ivotai.lean.user.po.User
 import java.util.*
 
 

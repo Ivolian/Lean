@@ -1,28 +1,61 @@
-package com.ivotai.lean.user.ui
+package com.ivotai.lean.user.n
 
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.azoft.carousellayoutmanager.CarouselLayoutManager
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener
 import com.azoft.carousellayoutmanager.CenterScrollListener
+import com.hannesdorfmann.mosby3.mvi.MviActivity
 import com.ivotai.lean.R
 import com.ivotai.lean.app.di.ComponentsHolder
 import com.ivotai.lean.tie.ui.TieAct
-import com.ivotai.lean.user.viewModel.UserViewModel
-import com.ivotai.lean.user.viewModel.UserViewModelFactory
-import com.orhanobut.logger.Logger
+import com.ivotai.lean.user.repo.UserRepo
+import com.jakewharton.rxbinding2.view.RxView
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.act_user.*
 import kotlinx.android.synthetic.main.retry_view.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class UserAct : AppCompatActivity() {
+class UserAct : MviActivity<UserView, UserPresenter>(), UserView {
+    @Inject lateinit var userApi: UserRepo
 
-    @Inject
-    lateinit var factory: UserViewModelFactory
+    override fun createPresenter(): UserPresenter {
+        ComponentsHolder.userComponent.inject(this)
+        return UserPresenter(userApi)
+//        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
+    override fun loadIntents(): Observable<Boolean> {
+        return Observable.just(true)
+
+    }
+
+    override fun retryIntents(): Observable<Boolean> {
+        return RxView.clicks(retryView.tvRetry)
+                .debounce(500, TimeUnit.MILLISECONDS)
+                .map { true }
+    }
+
+    override fun render(state: UserViewState) {
+        when (state) {
+            is UserViewState.LoadingState -> {
+                loadingView.show()
+                retryView.hide()
+            }
+            is UserViewState.ErrorState -> {
+                loadingView.hide()
+                retryView.show()
+            }
+            is UserViewState.DataState -> {
+                loadingView.hide()
+                retryView.hide()
+                userAdapter.setNewData(state.users)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,35 +66,10 @@ class UserAct : AppCompatActivity() {
             window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
         }
 
-        // getViewModel
-        ComponentsHolder.userComponent.inject(this)
-        val userViewModel = ViewModelProviders.of(this, factory)
-                .get(UserViewModel::class.java)
-
         // init view
         initRecyclerView()
         lifecycle.addObserver(loadingView)
-        tvRetry.setOnClickListener { userViewModel.getUsers() }
-
-        userViewModel.getUsers().observe(this, android.arch.lifecycle.Observer { resources ->
-            resources!!
-            Logger.d(resources)
-            if (resources.isLoading()) {
-                loadingView.show()
-                retryView.hide()
-            }
-            if (resources.isError()) {
-                loadingView.hide()
-                retryView.show()
-            }
-            if (resources.isSuccess()) {
-                loadingView.hide()
-                retryView.hide()
-                userAdapter.setNewData(resources.data)
-            }
-
-        })
-
+        tvRetry.setOnClickListener { loadIntents() }
     }
 
     private var userAdapter = UserAdapter()

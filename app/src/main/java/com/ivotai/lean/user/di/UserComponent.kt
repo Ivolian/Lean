@@ -1,7 +1,7 @@
 package com.ivotai.lean.user.di
 
 import com.ivotai.lean.tie.ui.TieAct
-import com.ivotai.lean.user.ui.UserAct
+import com.ivotai.lean.user.n.UserAct
 import dagger.Subcomponent
 
 @UserScope

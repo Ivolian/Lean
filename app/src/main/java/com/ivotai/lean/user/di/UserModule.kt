@@ -4,7 +4,7 @@ import com.ivotai.lean.tie.api.TieApi
 import com.ivotai.lean.tie.po.Tie
 import com.ivotai.lean.user.api.UserApi
 import com.ivotai.lean.user.repo.UserRepo
-import com.ivotai.lean.user.viewModel.User
+import com.ivotai.lean.user.po.User
 import dagger.Module
 import dagger.Provides
 import io.objectbox.Box
