@@ -1,6 +1,5 @@
 package com.ivotai.lean.tie.repo
 
-import android.arch.lifecycle.MediatorLiveData
 import com.ivotai.lean.tie.api.TieApi
 import com.ivotai.lean.tie.po.Tie
 import io.objectbox.Box
@@ -8,15 +7,16 @@ import javax.inject.Inject
 
 class TieRepo @Inject constructor(private val tieApi: TieApi, private val tieBox: Box<Tie>) {
 
-    private val ties = MediatorLiveData<ViewState<List<Tie>>>()
+//    private val ties = MediatorLiveData<ViewState<List<Tie>>>()
 
 
-    fun loadTies() = ties.apply {
-        if (value != null && value!!.isSuccess()) {
-            return@apply
-        }
+//    fun loadTies()
+//            = ties.apply {
+//        if (value != null && value!!.isSuccess()) {
+//            return@apply
+//        }
 //        watchDbSource()
-    }
+//    }
 
 //    private fun watchDbSource() = ties.apply {
 //        value = ViewState(Status.LOADING, Source.DB)

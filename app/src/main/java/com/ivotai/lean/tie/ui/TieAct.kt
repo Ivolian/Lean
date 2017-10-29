@@ -10,7 +10,6 @@ import com.ivotai.lean.R
 import com.ivotai.lean.app.di.ComponentsHolder
 import com.ivotai.lean.tie.viewModel.TieViewModel
 import com.ivotai.lean.tie.viewModel.TieViewModelFactory
-import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.act_tie.*
 import javax.inject.Inject
 
@@ -38,27 +37,27 @@ class TieAct : AppCompatActivity() {
         initRecyclerView()
         lifecycle.addObserver(loadingView)
         retryView.tvRetry.setOnClickListener {
-            tieViewModel.getTies()
+//            tieViewModel.getTies()
         }
-
-        tieViewModel.getTies().observe(this, android.arch.lifecycle.Observer { resources ->
-            resources!!
-            Logger.d(resources)
-            if (resources.isLoading()) {
-                loadingView.show()
-                retryView.hide()
-            }
-            if (resources.isError()) {
-                loadingView.hide()
-                retryView.show()
-            }
-            if (resources.isSuccess()) {
-                loadingView.hide()
-                retryView.hide()
-                tieAdapter.setNewData(resources.data)
-            }
-
-        })
+//
+//        tieViewModel.getTies().observe(this, android.arch.lifecycle.Observer { resources ->
+//            resources!!
+//            Logger.d(resources)
+//            if (resources.isLoading()) {
+//                loadingView.show()
+//                retryView.hide()
+//            }
+//            if (resources.isError()) {
+//                loadingView.hide()
+//                retryView.show()
+//            }
+//            if (resources.isSuccess()) {
+//                loadingView.hide()
+//                retryView.hide()
+//                tieAdapter.setNewData(resources.data)
+//            }
+//
+//        })
 
     }
 
