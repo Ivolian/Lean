@@ -12,6 +12,6 @@ interface TieApi {
     fun add(@Body tieWrapper: TieWrapper): Single<TieWrapper>
 
     @GET("tie/all")
-    fun all(): Single<List<TieWrapper>>
+    fun loadPage(pageNo: Int): Single<List<TieWrapper>>
 
 }

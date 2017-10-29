@@ -11,11 +11,7 @@ import com.azoft.carousellayoutmanager.CenterScrollListener
 import com.ivotai.lean.R
 import com.ivotai.lean.app.di.ComponentsHolder
 import com.ivotai.lean.tie.ui.TieAct
-import com.jakewharton.rxbinding2.view.RxView
-import io.reactivex.subjects.PublishSubject
 import kotlinx.android.synthetic.main.act_user.*
-import kotlinx.android.synthetic.main.retry_view.*
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class UserAct : AppCompatActivity(), UserView {
@@ -56,16 +52,11 @@ class UserAct : AppCompatActivity(), UserView {
         initRecyclerView()
         lifecycle.addObserver(loadingView)
 
-        // intent
-        RxView.clicks(tvRetry).debounce(500, TimeUnit.SECONDS)
-                .subscribe { userInteractor.loadUser().subscribe { render(it) } }
-
-
-        val intentRelay = PublishSubject.create<String>()
-
+        // intent useCase interactor
+//        RxView.clicks(tvRetry).debounce(500, TimeUnit.SECONDS)
+//                .subscribe { userInteractor.loadUser().subscribe { render(it) } }
         userInteractor.loadUser().subscribe { render(it) }
     }
-
 
     private var userAdapter = UserAdapter()
 

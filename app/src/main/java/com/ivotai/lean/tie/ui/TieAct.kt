@@ -7,6 +7,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.ivotai.lean.R
 import com.ivotai.lean.app.di.ComponentsHolder
+import com.jakewharton.rxbinding2.view.RxView
+import io.reactivex.Observable
 import kotlinx.android.synthetic.main.act_tie.*
 import javax.inject.Inject
 
@@ -32,7 +34,7 @@ class TieAct : AppCompatActivity(), TieView {
     }
 
     @Inject
-    lateinit var tieInteractor:TieInteractor
+    lateinit var tieInteractor: TieInteractor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,10 +53,16 @@ class TieAct : AppCompatActivity(), TieView {
         lifecycle.addObserver(loadingView)
 
         // intent
-        tieInteractor.loadTies().subscribe { render(it) }
-        retryView.tvRetry.setOnClickListener {
-            tieInteractor.loadTies().subscribe { render(it) }
-        }
+        Observable.merge(
+                Observable.just(true), RxView.clicks(retryView.tvRetry))
+                .subscribe {
+                    tieInteractor.loadTies(0).subscribe { render(it) }
+                }
+//        tieInteractor.loadTies(0).subscribe { render(it) }
+//        retryView.tvRetry.setOnClickListener {
+//            tieInteractor.loadTies(0).subscribe { render(it) }
+//        }
+//        tieAdapter.setOnLoadMoreListener{ tieInteractor.loadTies(0)}
     }
 
     private var tieAdapter = TieAdapter()

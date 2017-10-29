@@ -10,20 +10,13 @@ import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-
 class UserRepo @Inject constructor(private val userBox: Box<User>, private val userApi: UserApi) {
 
-    fun getUsers(): Observable<List<User>> {
-        val db = loadFromDb()
-        val network = fetchFromNetwork()
-        return network.concatWith(db).take(1)
-    }
-
-    private fun loadFromDb() = RxQuery
+     fun loadFromDb(): Observable<List<User>> = RxQuery
             .observable(userBox.query().build())
             .observeOn(AndroidSchedulers.mainThread())
 
-    private fun fetchFromNetwork() = userApi.all()
+     fun fetchFromNetwork(): Observable<List<User>> = userApi.all()
             .delay(2, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
