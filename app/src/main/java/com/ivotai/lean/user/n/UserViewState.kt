@@ -51,7 +51,7 @@ interface UserViewState {
     /**
      * Data has been loaded successfully and can now be displayed
      */
-    class DataState( val users: List<User>) : UserViewState {
+    class DataState(val users: List<User>) : UserViewState {
 
         override fun toString(): String {
             return "DataState{" +

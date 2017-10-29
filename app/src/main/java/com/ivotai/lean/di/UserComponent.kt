@@ -1,10 +1,9 @@
-package com.ivotai.lean.user.di
+package com.ivotai.lean.di
 
 import com.ivotai.lean.tie.ui.TieAct
 import com.ivotai.lean.user.n.UserAct
 import dagger.Subcomponent
 
-@UserScope
 @Subcomponent(modules = arrayOf(UserModule::class))
 interface UserComponent {
 

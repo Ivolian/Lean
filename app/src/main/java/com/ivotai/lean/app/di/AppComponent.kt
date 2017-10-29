@@ -1,6 +1,6 @@
 package com.ivotai.lean.app.di
 
-import com.ivotai.lean.user.di.UserComponent
+import com.ivotai.lean.di.UserComponent
 import dagger.Component
 
 @AppScope
