@@ -1,4 +1,4 @@
-package com.ivotai.lean.user.n
+package com.ivotai.lean.user.ui
 
 import com.ivotai.lean.user.repo.UserRepo
 import javax.inject.Inject

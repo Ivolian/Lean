@@ -7,7 +7,7 @@ import io.objectbox.relation.ToOne
 import java.util.*
 
 @Entity
- class Tie {
+class Tie {
     @Id(assignable = true)
     var id: Long = 0
     var thumbCount: Int = 0

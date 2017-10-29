@@ -1,4 +1,4 @@
-package com.ivotai.lean.user.n
+package com.ivotai.lean.user.ui
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide
