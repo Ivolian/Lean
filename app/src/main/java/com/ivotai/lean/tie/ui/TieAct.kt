@@ -7,28 +7,29 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.ivotai.lean.R
 import com.ivotai.lean.app.di.ComponentsHolder
-import com.jakewharton.rxbinding2.view.RxView
-import io.reactivex.Observable
+import com.ivotai.lean.tie.po.Tie
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.act_tie.*
 import javax.inject.Inject
 
 
 class TieAct : AppCompatActivity(), TieView {
 
+    var ties = ArrayList<Tie>()
+
     override fun render(state: TieViewState) {
-        when (state) {
-            is TieViewState.LoadingState -> {
-                loadingView.show()
-                retryView.hide()
+        when {
+            state.loadingFirstPage -> {
+                state.data?.let { tieAdapter.setNewData(it) }
             }
-            is TieViewState.ErrorState -> {
-                loadingView.hide()
-                retryView.show()
+            state.loadingPullToRefresh -> {
+                state.data?.let { tieAdapter.setNewData(it) }
+                swipeRefreshLayout.isRefreshing = false
             }
-            is TieViewState.DataState -> {
-                loadingView.hide()
-                retryView.hide()
-                tieAdapter.setNewData(state.ties)
+            state.loadingNextPage -> {
+                ties.addAll(state.data!!)
+                tieAdapter.setNewData(ties)
             }
         }
     }
@@ -53,16 +54,29 @@ class TieAct : AppCompatActivity(), TieView {
         lifecycle.addObserver(loadingView)
 
         // intent
-        Observable.merge(
-                Observable.just(true), RxView.clicks(retryView.tvRetry))
-                .subscribe {
-                    tieInteractor.loadTies(0).subscribe { render(it) }
-                }
-//        tieInteractor.loadTies(0).subscribe { render(it) }
+        swipeRefreshLayout.setOnRefreshListener {
+            tieInteractor.loadingFirstPage().subscribe{render(it)}
+        }
+        tieInteractor.loadingFirstPage().subscribe(object : Observer<TieViewState> {
+            override fun onComplete() {
+            }
+
+            override fun onSubscribe(d: Disposable?) {
+            }
+
+            override fun onNext(t: TieViewState?) {
+                render(t!!)
+            }
+
+            override fun onError(e: Throwable?) {
+                ""
+            }
+        })
+
 //        retryView.tvRetry.setOnClickListener {
 //            tieInteractor.loadTies(0).subscribe { render(it) }
 //        }
-//        tieAdapter.setOnLoadMoreListener{ tieInteractor.loadTies(0)}
+//        tieAdapter.setOnLoadMoreListener { tieInteractor.loadingNextPage() }
     }
 
     private var tieAdapter = TieAdapter()

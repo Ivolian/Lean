@@ -21,9 +21,9 @@ class TieRepo @Inject constructor(private val tieApi: TieApi, private val tieBox
 //            .observable(tieBox.query().build())
 //            .observeOn(AndroidSchedulers.mainThread())
 
-    fun reload() = loadNextPage(0)
+    fun reload() = loadPage(0)
 
-    fun loadNextPage(pageNo: Int) = tieApi.loadPage(pageNo)
+    fun loadPage(pageNo: Int) = tieApi.loadPage(pageNo)
             .delay(2, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
