@@ -4,6 +4,7 @@ import com.ivotai.lean.tie.api.TieApi
 import com.ivotai.lean.tie.dto.TieWrapper
 import com.ivotai.lean.tie.po.Tie
 import io.objectbox.Box
+import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
@@ -23,13 +24,13 @@ class TieRepo @Inject constructor(private val tieApi: TieApi, private val tieBox
 
     fun reload() = loadPage(0)
 
-    fun loadPage(pageNo: Int) = tieApi.loadPage(pageNo)
+    fun loadPage(pageNo: Int): Single<List<Tie>> = tieApi.loadPage(pageNo)
             .delay(2, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map { wrappers -> wrappers.map { TieWrapper.toTie(it) } }
             .doOnSuccess { tieBox.put(it) }
-            .toObservable()
+
 
 }
 

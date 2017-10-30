@@ -5,37 +5,74 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import com.blankj.utilcode.util.ToastUtils
 import com.ivotai.lean.R
 import com.ivotai.lean.app.di.ComponentsHolder
+import com.ivotai.lean.base.ViewState1
 import com.ivotai.lean.tie.po.Tie
-import io.reactivex.Observer
-import io.reactivex.disposables.Disposable
+import com.ivotai.lean.tie.repo.TieRepo
+import com.ivotai.lean.tie.useCase.LoadFirstPage
+import com.ivotai.lean.tie.useCase.LoadNextPage
+import com.ivotai.lean.tie.useCase.ReloadPage
 import kotlinx.android.synthetic.main.act_tie.*
 import javax.inject.Inject
 
 
 class TieAct : AppCompatActivity(), TieView {
 
-    var ties = ArrayList<Tie>()
-
-    override fun render(state: TieViewState) {
+    override fun renderFirstPage(state: ViewState1<List<Tie>>) {
         when {
-            state.loadingFirstPage -> {
-                state.data?.let { tieAdapter.setNewData(it) }
+            state.isLoading() -> {
+                loadingView.show()
+                retryView.hide()
             }
-            state.loadingPullToRefresh -> {
-                state.data?.let { tieAdapter.setNewData(it) }
+            state.isError() -> {
+                loadingView.hide()
+                retryView.show()
+            }
+            state.isSuccess() -> {
+                loadingView.hide()
+                retryView.hide()
+                tieAdapter.setNewData(state.data)
+            }
+        }
+    }
+
+    override fun renderNextPage(state: ViewState1<List<Tie>>) {
+        when {
+            state.isLoading() -> {
+                // do nothing
+            }
+            state.isError() -> {
+                tieAdapter.loadMoreComplete()
+                ToastUtils.showShort(state.error?.message)
+            }
+            state.isSuccess() -> {
+                tieAdapter.loadMoreComplete()
+                tieAdapter.addData(state.data!!)
+                tieAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    override fun reloadPage(state: ViewState1<List<Tie>>) {
+        when {
+            state.isLoading() -> {
+                swipeRefreshLayout.isRefreshing = true
+            }
+            state.isError() -> {
                 swipeRefreshLayout.isRefreshing = false
+                ToastUtils.showShort(state.error?.message)
             }
-            state.loadingNextPage -> {
-                ties.addAll(state.data!!)
-                tieAdapter.setNewData(ties)
+            state.isSuccess() -> {
+                swipeRefreshLayout.isRefreshing = false
+                tieAdapter.setNewData(state.data)
             }
         }
     }
 
     @Inject
-    lateinit var tieInteractor: TieInteractor
+    lateinit var tieRepo: TieRepo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,31 +90,14 @@ class TieAct : AppCompatActivity(), TieView {
         initRecyclerView()
         lifecycle.addObserver(loadingView)
 
-        // intent
-        swipeRefreshLayout.setOnRefreshListener {
-            tieInteractor.loadingFirstPage().subscribe{render(it)}
-        }
-        tieInteractor.loadingFirstPage().subscribe(object : Observer<TieViewState> {
-            override fun onComplete() {
-            }
-
-            override fun onSubscribe(d: Disposable?) {
-            }
-
-            override fun onNext(t: TieViewState?) {
-                render(t!!)
-            }
-
-            override fun onError(e: Throwable?) {
-                ""
-            }
-        })
-
-//        retryView.tvRetry.setOnClickListener {
-//            tieInteractor.loadTies(0).subscribe { render(it) }
-//        }
-//        tieAdapter.setOnLoadMoreListener { tieInteractor.loadingNextPage() }
+        // intent => use case
+        swipeRefreshLayout.setOnRefreshListener { ReloadPage(this, tieRepo) }
+        retryView.tvRetry.setOnClickListener { LoadFirstPage(this, tieRepo) }
+        tieAdapter.setOnLoadMoreListener { LoadNextPage(this, tieRepo, pageNo) }
+        LoadFirstPage(this, tieRepo)
     }
+
+    var pageNo = 0
 
     private var tieAdapter = TieAdapter()
 

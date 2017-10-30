@@ -1,6 +1,9 @@
 package com.ivotai.lean.base
 
-class ViewState1<out T>(val data: T? = null, val error: Throwable? = null) {
+class ViewState1<out T>(
+        val data: T? = null,
+        val error: Throwable? = null
+) {
 
     fun isLoading() = data == null && error == null
     fun isSuccess() = data != null
