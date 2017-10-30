@@ -10,28 +10,33 @@ import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener
 import com.azoft.carousellayoutmanager.CenterScrollListener
 import com.ivotai.lean.R
 import com.ivotai.lean.app.di.ComponentsHolder
+import com.ivotai.lean.base.ViewState1
 import com.ivotai.lean.tie.ui.TieAct
+import com.ivotai.lean.user.interactor.UserInteractor
+import com.ivotai.lean.user.po.User
+import com.jakewharton.rxbinding2.view.RxView
 import kotlinx.android.synthetic.main.act_user.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class UserAct : AppCompatActivity(), UserView {
 
     @Inject lateinit var userInteractor: UserInteractor
 
-    override fun render(state: UserViewState) {
-        when (state) {
-            is UserViewState.LoadingState -> {
+    override fun render(state: ViewState1<List<User>>) {
+        when {
+            state.isLoading() -> {
                 loadingView.show()
                 retryView.hide()
             }
-            is UserViewState.ErrorState -> {
+            state.isError() -> {
                 loadingView.hide()
                 retryView.show()
             }
-            is UserViewState.DataState -> {
+            state.isSuccess() -> {
                 loadingView.hide()
                 retryView.hide()
-                userAdapter.setNewData(state.users)
+                userAdapter.setNewData(state.data)
             }
         }
     }
@@ -52,9 +57,12 @@ class UserAct : AppCompatActivity(), UserView {
         initRecyclerView()
         lifecycle.addObserver(loadingView)
 
-        // intent useCase interactor
-//        RxView.clicks(tvRetry).debounce(500, TimeUnit.SECONDS)
-//                .subscribe { userInteractor.loadUser().subscribe { render(it) } }
+        // intent => use case
+        RxView.clicks(retryView.tvRetry).debounce(500, TimeUnit.SECONDS).subscribe { loadUserUseCaseStart() }
+        loadUserUseCaseStart()
+    }
+
+    private fun loadUserUseCaseStart() {
         userInteractor.loadUser().subscribe { render(it) }
     }
 
