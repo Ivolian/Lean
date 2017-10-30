@@ -14,6 +14,7 @@ import com.ivotai.lean.tie.repo.TieRepo
 import com.ivotai.lean.tie.useCase.LoadFirstPage
 import com.ivotai.lean.tie.useCase.LoadNextPage
 import com.ivotai.lean.tie.useCase.ReloadPage
+import com.orhanobut.logger.Logger
 import kotlinx.android.synthetic.main.act_tie.*
 import javax.inject.Inject
 
@@ -21,6 +22,7 @@ import javax.inject.Inject
 class TieAct : AppCompatActivity(), TieView {
 
     override fun renderFirstPage(state: ViewState1<List<Tie>>) {
+        Logger.d(state)
         when {
             state.isLoading() -> {
                 loadingView.show()
@@ -91,15 +93,18 @@ class TieAct : AppCompatActivity(), TieView {
         lifecycle.addObserver(loadingView)
 
         // intent => use case
-        swipeRefreshLayout.setOnRefreshListener { ReloadPage(this, tieRepo) }
         retryView.tvRetry.setOnClickListener { LoadFirstPage(this, tieRepo) }
-        tieAdapter.setOnLoadMoreListener { LoadNextPage(this, tieRepo, pageNo) }
+        swipeRefreshLayout.setOnRefreshListener { ReloadPage(this, tieRepo) }
+        tieAdapter.setOnLoadMoreListener({ LoadNextPage(this, tieRepo, pageNo) }, recyclerView)
         LoadFirstPage(this, tieRepo)
     }
 
-    var pageNo = 0
+    private val pageNo
+        get() = tieAdapter.data.size / pageSize
 
-    private var tieAdapter = TieAdapter()
+    private val pageSize = 10
+
+    private val tieAdapter = TieAdapter()
 
     private fun initRecyclerView() {
         recyclerView.apply {

@@ -22,15 +22,12 @@ class TieRepo @Inject constructor(private val tieApi: TieApi, private val tieBox
 //            .observable(tieBox.query().build())
 //            .observeOn(AndroidSchedulers.mainThread())
 
-    fun reload() = loadPage(0)
-
     fun loadPage(pageNo: Int): Single<List<Tie>> = tieApi.loadPage(pageNo)
             .delay(2, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .map { wrappers -> wrappers.map { TieWrapper.toTie(it) } }
             .doOnSuccess { tieBox.put(it) }
-
 
 }
 

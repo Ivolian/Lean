@@ -1,6 +1,6 @@
 package com.ivotai.lean.base
 
-class ViewState1<out T>(
+data class ViewState1<out T>(
         val data: T? = null,
         val error: Throwable? = null
 ) {
