@@ -37,3 +37,7 @@
 }
 #
 -keep class org.ocpsoft.prettytime.i18n.**
+
+#
+-keep class com.wang.avi.** { *; }
+-keep class com.wang.avi.indicators.** { *; }

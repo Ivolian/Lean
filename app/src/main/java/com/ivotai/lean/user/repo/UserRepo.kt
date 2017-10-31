@@ -6,7 +6,6 @@ import io.objectbox.Box
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class UserRepo @Inject constructor(private val userBox: Box<User>, private val userApi: UserApi) {
@@ -16,7 +15,7 @@ class UserRepo @Inject constructor(private val userBox: Box<User>, private val u
 //            .observeOn(AndroidSchedulers.mainThread())
 
      fun fetchFromNetwork(): Single<List<User>> = userApi.all()
-            .delay(2, TimeUnit.SECONDS)
+//            .delay(1, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .doOnSuccess { userBox.put(it) }
