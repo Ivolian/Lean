@@ -8,46 +8,20 @@ import android.view.View
 import com.azoft.carousellayoutmanager.CarouselLayoutManager
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener
 import com.azoft.carousellayoutmanager.CenterScrollListener
-import com.ivotai.lean.Current
 import com.ivotai.lean.R
-import com.ivotai.lean.app.base.ViewState1
-import com.ivotai.lean.app.di.ComponentsHolder
+import com.ivotai.lean.app.Current
 import com.ivotai.lean.tie.ui.TieAct
-import com.ivotai.lean.user.useCase.UserInteractor
-import com.ivotai.lean.user.po.User
+import com.ivotai.lean.user.useCase.LoadUserUseCase
 import com.jakewharton.rxbinding2.view.RxView
+import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.act_user.*
 import java.util.concurrent.TimeUnit
-import javax.inject.Inject
 
-class UserAct : AppCompatActivity(), UserView {
-
-    @Inject lateinit var userInteractor: UserInteractor
-
-    override fun render(state: ViewState1<List<User>>) {
-        when {
-            state.isLoading() -> {
-                loadingView.show()
-                retryView.hide()
-            }
-            state.isError() -> {
-                loadingView.hide()
-                retryView.show()
-            }
-            state.isSuccess() -> {
-                loadingView.hide()
-                retryView.hide()
-                userAdapter.setNewData(state.data)
-            }
-        }
-    }
+class UserAct : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.act_user)
-
-        // di
-        ComponentsHolder.userComponent.inject(this)
 
         // system ui
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -59,12 +33,28 @@ class UserAct : AppCompatActivity(), UserView {
         lifecycle.addObserver(loadingView)
 
         // intent => use case
-        RxView.clicks(retryView.tvRetry).debounce(500, TimeUnit.SECONDS).subscribe { loadUserUseCaseStart() }
-        loadUserUseCaseStart()
+        RxView.clicks(retryView.tvRetry).debounce(500, TimeUnit.SECONDS).subscribe { loadUser() }
+        loadUser()
     }
 
-    private fun loadUserUseCaseStart() {
-        userInteractor.loadUser().subscribe { render(it) }
+    private fun loadUser() {
+        LoadUserUseCase(Consumer {
+            when {
+                it.isLoading() -> {
+                    loadingView.show()
+                    retryView.hide()
+                }
+                it.isError() -> {
+                    loadingView.hide()
+                    retryView.show()
+                }
+                it.isSuccess() -> {
+                    loadingView.hide()
+                    retryView.hide()
+                    userAdapter.setNewData(it.data)
+                }
+            }
+        })
     }
 
     private var userAdapter = UserAdapter()

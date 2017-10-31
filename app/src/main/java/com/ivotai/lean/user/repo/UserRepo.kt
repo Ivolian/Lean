@@ -10,14 +10,10 @@ import javax.inject.Inject
 
 class UserRepo @Inject constructor(private val userBox: Box<User>, private val userApi: UserApi) {
 
-//     fun loadFromDb(): Observable<List<User>> = RxQuery
-//            .observable(userBox.query().build())
-//            .observeOn(AndroidSchedulers.mainThread())
-
-     fun fetchFromNetwork(): Single<List<User>> = userApi.all()
-//            .delay(1, TimeUnit.SECONDS)
+    fun fetchFromNetwork(): Single<List<User>> = userApi.all()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
+            // 持久化
             .doOnSuccess { userBox.put(it) }
 
 }

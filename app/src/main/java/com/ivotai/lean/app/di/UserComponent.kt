@@ -4,6 +4,7 @@ import com.ivotai.lean.tie.add.AddTieAct
 import com.ivotai.lean.tie.repo.TieRepo
 import com.ivotai.lean.tie.ui.TieAct
 import com.ivotai.lean.upload.api.UploadApi
+import com.ivotai.lean.user.repo.UserRepo
 import com.ivotai.lean.user.ui.UserAct
 import dagger.Subcomponent
 
@@ -16,5 +17,6 @@ interface UserComponent {
 
     fun getUploadApi():UploadApi
     fun getTieRepo():TieRepo
+    fun getUserRepo(): UserRepo
 
 }

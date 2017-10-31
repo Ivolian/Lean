@@ -1,6 +1,6 @@
 package com.ivotai.lean.tie.add
 
-import com.ivotai.lean.Current
+import com.ivotai.lean.app.Current
 import com.ivotai.lean.app.base.ViewState1
 import com.ivotai.lean.tie.dto.TieWrapper
 import com.ivotai.lean.tie.repo.TieRepo
