@@ -10,7 +10,7 @@ import io.reactivex.schedulers.Schedulers
 import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
-class TieRepo @Inject constructor(private val tieApi: TieApi, private val tieBox: Box<Tie>) {
+class TieRepo @Inject constructor( val tieApi: TieApi, private val tieBox: Box<Tie>) {
 
 //    fun getTies(): Observable<List<Tie>> {
 //        val db = loadFromDb()
@@ -28,6 +28,10 @@ class TieRepo @Inject constructor(private val tieApi: TieApi, private val tieBox
             .observeOn(AndroidSchedulers.mainThread())
             .map { wrappers -> wrappers.map { TieWrapper.toTie(it) } }
             .doOnSuccess { tieBox.put(it) }
+
+    fun addTie(tieWrapper: TieWrapper) = tieApi.add(tieWrapper)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
 
 }
 

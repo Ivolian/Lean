@@ -1,5 +1,6 @@
 package com.ivotai.lean.tie.ui
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -9,15 +10,15 @@ import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.chad.library.adapter.base.loadmore.LoadMoreView
 import com.ivotai.lean.R
+import com.ivotai.lean.app.base.ViewState1
 import com.ivotai.lean.app.di.ComponentsHolder
-import com.ivotai.lean.base.ViewState1
+import com.ivotai.lean.tie.add.AddTieAct
 import com.ivotai.lean.tie.po.Tie
 import com.ivotai.lean.tie.repo.TieRepo
 import com.ivotai.lean.tie.useCase.LoadFirstPage
 import com.ivotai.lean.tie.useCase.LoadNextPage
 import com.ivotai.lean.tie.useCase.ReloadPage
 import com.orhanobut.logger.Logger
-import com.wang.avi.AVLoadingIndicatorView
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration
 import kotlinx.android.synthetic.main.act_tie.*
 import javax.inject.Inject
@@ -114,8 +115,7 @@ class TieAct : AppCompatActivity(), TieView {
         recyclerView.apply {
             layoutManager = LinearLayoutManager(this@TieAct)
             tieAdapter.bindToRecyclerView(this)
-//            tieAdapter.setOnItemClickListener { _, _, _ -> }
-            var lv = AVLoadingIndicatorView(this@TieAct)
+            tieAdapter.setOnItemClickListener { _, _, _ ->  startActivity(Intent(this@TieAct, AddTieAct::class.java))}
 
             tieAdapter.setLoadMoreView(object : LoadMoreView() {
                 override fun getLayoutId() = R.layout.loadmore_view

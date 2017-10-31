@@ -1,6 +1,6 @@
-package com.ivotai.lean.user.interactor
+package com.ivotai.lean.user.useCase
 
-import com.ivotai.lean.base.ViewState1
+import com.ivotai.lean.app.base.ViewState1
 import com.ivotai.lean.user.po.User
 import com.ivotai.lean.user.repo.UserRepo
 import io.reactivex.Observable

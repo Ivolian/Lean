@@ -1,6 +1,6 @@
 package com.ivotai.lean.tie.ui
 
-import com.ivotai.lean.base.ViewState1
+import com.ivotai.lean.app.base.ViewState1
 import com.ivotai.lean.tie.po.Tie
 
 interface TieView {

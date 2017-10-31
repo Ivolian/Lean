@@ -8,11 +8,12 @@ import android.view.View
 import com.azoft.carousellayoutmanager.CarouselLayoutManager
 import com.azoft.carousellayoutmanager.CarouselZoomPostLayoutListener
 import com.azoft.carousellayoutmanager.CenterScrollListener
+import com.ivotai.lean.Current
 import com.ivotai.lean.R
+import com.ivotai.lean.app.base.ViewState1
 import com.ivotai.lean.app.di.ComponentsHolder
-import com.ivotai.lean.base.ViewState1
 import com.ivotai.lean.tie.ui.TieAct
-import com.ivotai.lean.user.interactor.UserInteractor
+import com.ivotai.lean.user.useCase.UserInteractor
 import com.ivotai.lean.user.po.User
 import com.jakewharton.rxbinding2.view.RxView
 import kotlinx.android.synthetic.main.act_user.*
@@ -74,7 +75,8 @@ class UserAct : AppCompatActivity(), UserView {
                     .apply { setPostLayoutListener(CarouselZoomPostLayoutListener()) }
             addOnScrollListener(CenterScrollListener())
             userAdapter.bindToRecyclerView(this)
-            userAdapter.setOnItemClickListener { _, _, _ ->
+            userAdapter.setOnItemClickListener { _, _, pos ->
+                Current.user = userAdapter.getItem(pos)
                 startActivity(Intent(this@UserAct, TieAct::class.java))
             }
         }

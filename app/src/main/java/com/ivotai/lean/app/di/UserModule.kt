@@ -1,7 +1,8 @@
-package com.ivotai.lean.di
+package com.ivotai.lean.app.di
 
 import com.ivotai.lean.tie.api.TieApi
 import com.ivotai.lean.tie.po.Tie
+import com.ivotai.lean.upload.api.UploadApi
 import com.ivotai.lean.user.api.UserApi
 import com.ivotai.lean.user.po.User
 import dagger.Module
@@ -24,5 +25,8 @@ class UserModule {
 
     @Provides
     fun tieBox(boxStore: BoxStore): Box<Tie> = boxStore.boxFor(Tie::class.java)
+
+    @Provides
+    fun tieApi2(retrofit: Retrofit): UploadApi = retrofit.create(UploadApi::class.java)
 
 }

@@ -6,11 +6,11 @@ import java.util.*
 
 
 data class TieWrapper(
-        val id: Long,
+        val id: Long=0,
         val content: String,
-        val createTime: Long,
-        val thumbCount: Int,
-        val pic: String,
+        val createTime: Long= Date().time,
+        val thumbCount: Int = 0,
+        val pic: String = "",
         val poster: User
 ) {
 

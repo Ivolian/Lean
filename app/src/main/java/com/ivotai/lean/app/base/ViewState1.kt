@@ -1,4 +1,4 @@
-package com.ivotai.lean.base
+package com.ivotai.lean.app.base
 
 data class ViewState1<out T>(
         val data: T? = null,
