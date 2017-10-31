@@ -68,6 +68,7 @@ dependencies {
     compile 'com.hannesdorfmann.mosby3:mvi:3.0.4'
     compile 'com.jakewharton.rxbinding2:rxbinding:2.0.0'
     compile 'com.baidu.mobstat:mtj-sdk:latest.integration'
+    compile 'com.yqritc:recyclerview-flexibledivider:1.4.0'
 }
 
 apply plugin: 'io.objectbox'

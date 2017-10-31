@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import com.blankj.utilcode.util.ConvertUtils
 import com.blankj.utilcode.util.ToastUtils
 import com.ivotai.lean.R
 import com.ivotai.lean.app.di.ComponentsHolder
@@ -15,6 +16,7 @@ import com.ivotai.lean.tie.useCase.LoadFirstPage
 import com.ivotai.lean.tie.useCase.LoadNextPage
 import com.ivotai.lean.tie.useCase.ReloadPage
 import com.orhanobut.logger.Logger
+import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration
 import kotlinx.android.synthetic.main.act_tie.*
 import javax.inject.Inject
 
@@ -111,6 +113,11 @@ class TieAct : AppCompatActivity(), TieView {
             layoutManager = LinearLayoutManager(this@TieAct)
             tieAdapter.bindToRecyclerView(this)
 //            tieAdapter.setOnItemClickListener { _, _, _ -> }
+            addItemDecoration(
+                    HorizontalDividerItemDecoration.Builder(this@TieAct)
+                            .colorResId(R.color.material_grey_100)
+                            .size(ConvertUtils.dp2px(8f))
+                            .build())
         }
     }
 

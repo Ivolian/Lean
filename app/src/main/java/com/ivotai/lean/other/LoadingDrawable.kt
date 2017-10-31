@@ -4,7 +4,7 @@ import android.content.res.Resources
 import android.graphics.drawable.AnimationDrawable
 import com.ivotai.lean.R
 
-class LoadingDrawable(private val resources: Resources) : AnimationDrawable(){
+class LoadingDrawable(private val resources: Resources) : AnimationDrawable() {
 
     init {
         listOf(

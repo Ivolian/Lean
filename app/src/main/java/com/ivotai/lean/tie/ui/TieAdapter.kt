@@ -19,7 +19,8 @@ class TieAdapter : BaseQuickAdapter<Tie, BaseViewHolder>(R.layout.item_tie) {
         Glide.with(mContext).load(NetworkModule.baseUrl + poster.avatar).into(ivAvatar)
         helper.getView<TextView>(R.id.tvName).text = poster.name
 
-        helper.getView<TextView>(R.id.tvCreateTime).text = PrettyTime( Locale("ZH_CN")).format(tie.createTime)
+
+        helper.getView<TextView>(R.id.tvCreateTime).text = PrettyTime( Locale.CHINESE).format(tie.createTime).replace(" ","")
         helper.getView<TextView>(R.id.tvContent).text = tie.content
         val ivPic = helper.getView<ImageView>(R.id.ivPic)
         Glide.with(mContext).load(tie.pic).into(ivPic)
