@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.text.TextUtils
 import android.view.View
 import com.blankj.utilcode.util.ToastUtils
 import com.bumptech.glide.Glide
@@ -16,9 +17,14 @@ import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.act_add_tie.*
 import me.nereo.multi_image_selector.MultiImageSelector
 import me.nereo.multi_image_selector.MultiImageSelectorActivity
+import java.util.concurrent.TimeUnit
 
 
 class AddTieAct : AppCompatActivity() {
+
+    private val code = 233
+
+    private var pic = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,11 +36,16 @@ class AddTieAct : AppCompatActivity() {
         }
 
         // ui
-        RxView.clicks(ivPic).subscribe {
-            MultiImageSelector.create().start(this, REQUEST_CODE)
-        }
-        tvTitle.setOnClickListener {
-            AddTieUseCase(etContent.text.toString(), pic, Consumer {
+        RxView.clicks(ivPic)
+                .throttleFirst(500, TimeUnit.SECONDS)
+                .subscribe { MultiImageSelector.create().start(this, code) }
+
+        RxView.clicks(tvTitle).throttleFirst(500, TimeUnit.SECONDS).subscribe {
+            val content = etContent.text.toString().trim()
+            if (TextUtils.isEmpty(content)) {
+                return@subscribe
+            }
+            AddTieUseCase(content, pic, Consumer {
                 if (it.isSuccess()) {
                     ToastUtils.showShort("ok")
                 }
@@ -42,14 +53,9 @@ class AddTieAct : AppCompatActivity() {
         }
     }
 
-    private val REQUEST_CODE = 233
-
-    private var pic = ""
-
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+        if (requestCode == code && resultCode == RESULT_OK) {
             val paths = data.getStringArrayListExtra(MultiImageSelectorActivity.EXTRA_RESULT) ?: return
             UploadPic(paths[0], Consumer {
                 if (it.isSuccess()) {
@@ -65,6 +71,5 @@ class AddTieAct : AppCompatActivity() {
             })
         }
     }
-
 
 }
