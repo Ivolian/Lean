@@ -1,4 +1,4 @@
-package com.ivotai.lean.app.di
+package com.ivotai.lean.app.di.user
 
 import com.ivotai.lean.tie.api.TieApi
 import com.ivotai.lean.tie.po.Tie

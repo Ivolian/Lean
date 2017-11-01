@@ -37,7 +37,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".tie.ui.TieAct" />
-        <activity android:name=".tie.add.AddTieAct"/>
+        <activity android:name="com.ivotai.lean.tie.add.ui.AddTieAct"/>
         <!--Image Selector Entry-->
         <activity
             android:configChanges="orientation|screenSize"

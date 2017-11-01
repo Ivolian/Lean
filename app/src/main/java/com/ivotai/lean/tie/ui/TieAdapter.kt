@@ -20,10 +20,12 @@ class TieAdapter : BaseQuickAdapter<Tie, BaseViewHolder>(R.layout.item_tie) {
         helper.getView<TextView>(R.id.tvName).text = poster.name
 
 
-        helper.getView<TextView>(R.id.tvCreateTime).text = PrettyTime( Locale.CHINESE).format(tie.createTime).replace(" ","")
+        helper.getView<TextView>(R.id.tvCreateTime).text = PrettyTime(Locale.CHINESE).format(tie.createTime).replace(" ", "")
         helper.getView<TextView>(R.id.tvContent).text = tie.content
         val ivPic = helper.getView<ImageView>(R.id.ivPic)
-        Glide.with(mContext).load(tie.pic).into(ivPic)
+        Glide.with(mContext).load(
+                if (tie.pic.startsWith("h")) tie.pic else NetworkModule.baseUrl + tie.pic
+        ).into(ivPic)
     }
 
 }

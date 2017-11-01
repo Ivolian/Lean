@@ -15,7 +15,6 @@ import com.ivotai.lean.user.useCase.LoadUserUseCase
 import com.jakewharton.rxbinding2.view.RxView
 import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.act_user.*
-import java.util.concurrent.TimeUnit
 
 class UserAct : AppCompatActivity() {
 
@@ -32,9 +31,15 @@ class UserAct : AppCompatActivity() {
         initRecyclerView()
         lifecycle.addObserver(loadingView)
 
-        // intent => use case
-        RxView.clicks(retryView.tvRetry).debounce(500, TimeUnit.SECONDS).subscribe { loadUser() }
+        // intent
+        RxView.clicks(retryView.tvRetry)
+//                .debounce(500, TimeUnit.SECONDS)
+                .subscribe { loadUser() }
         loadUser()
+        userAdapter.setOnItemClickListener { _, _, pos ->
+            Current.user = userAdapter.getItem(pos)
+            startActivity(Intent(this@UserAct, TieAct::class.java))
+        }
     }
 
     private fun loadUser() {
@@ -65,10 +70,6 @@ class UserAct : AppCompatActivity() {
                     .apply { setPostLayoutListener(CarouselZoomPostLayoutListener()) }
             addOnScrollListener(CenterScrollListener())
             userAdapter.bindToRecyclerView(this)
-            userAdapter.setOnItemClickListener { _, _, pos ->
-                Current.user = userAdapter.getItem(pos)
-                startActivity(Intent(this@UserAct, TieAct::class.java))
-            }
         }
     }
 

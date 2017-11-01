@@ -12,7 +12,7 @@ import com.chad.library.adapter.base.loadmore.LoadMoreView
 import com.ivotai.lean.R
 import com.ivotai.lean.app.base.ViewState1
 import com.ivotai.lean.app.di.ComponentsHolder
-import com.ivotai.lean.tie.add.AddTieAct
+import com.ivotai.lean.tie.add.ui.AddTieAct
 import com.ivotai.lean.tie.po.Tie
 import com.ivotai.lean.tie.repo.TieRepo
 import com.ivotai.lean.tie.useCase.LoadFirstPage
