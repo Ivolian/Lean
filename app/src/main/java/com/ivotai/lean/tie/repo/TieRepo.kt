@@ -1,7 +1,7 @@
 package com.ivotai.lean.tie.repo
 
 import com.ivotai.lean.tie.api.TieApi
-import com.ivotai.lean.tie.dto.TieWrapper
+import com.ivotai.lean.tie.dto.TieDTO
 import com.ivotai.lean.tie.po.Tie
 import io.objectbox.Box
 import io.reactivex.Single
@@ -26,10 +26,10 @@ class TieRepo @Inject constructor( val tieApi: TieApi, private val tieBox: Box<T
             .delay(1, TimeUnit.SECONDS)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .map { wrappers -> wrappers.map { TieWrapper.toTie(it) } }
+            .map { wrappers -> wrappers.map { TieDTO.toTie(it) } }
             .doOnSuccess { tieBox.put(it) }
 
-    fun addTie(tieWrapper: TieWrapper) = tieApi.add(tieWrapper)
+    fun addTie(tieDTO: TieDTO) = tieApi.add(tieDTO)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
 

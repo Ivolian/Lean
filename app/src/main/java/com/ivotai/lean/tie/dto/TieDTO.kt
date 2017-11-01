@@ -4,8 +4,7 @@ import com.ivotai.lean.tie.po.Tie
 import com.ivotai.lean.user.po.User
 import java.util.*
 
-
-data class TieWrapper(
+data class TieDTO(
         val id: Long=0,
         val content: String,
         val createTime: Long= Date().time,
@@ -16,9 +15,9 @@ data class TieWrapper(
 
     companion object {
 
-        fun fromTie(tie: Tie): TieWrapper {
+        fun fromTie(tie: Tie): TieDTO {
             with(tie) {
-                return TieWrapper(
+                return TieDTO(
                         id = id,
                         content = content,
                         createTime = createTime.time,
@@ -29,8 +28,8 @@ data class TieWrapper(
             }
         }
 
-        fun toTie(tieWrapper: TieWrapper): Tie {
-            with(tieWrapper) {
+        fun toTie(tieDTO: TieDTO): Tie {
+            with(tieDTO) {
                 val tie = Tie()
                 tie.id = id
                 tie.content = content
@@ -41,7 +40,5 @@ data class TieWrapper(
                 return tie
             }
         }
-
     }
-
 }
