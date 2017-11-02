@@ -16,7 +16,7 @@ class LoadingDrawable(private val resources: Resources) : AnimationDrawable() {
                 R.mipmap.gif_loading6,
                 R.mipmap.gif_loading7
         ).forEach {
-//            addFrame(resources.getDrawable(it), 100)
+            addFrame(resources.getDrawable(it), 100)
         }
     }
 

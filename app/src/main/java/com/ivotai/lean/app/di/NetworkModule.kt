@@ -34,9 +34,9 @@ class NetworkModule {
             .build()
 
     companion object {
-        //        val baseUrl = "http://ivotai.nat300.top/lean/"
+                val baseUrl = "http://ivotai.nat300.top/lean/"
 //        val baseUrl = "http://192.168.1.5:8080/"
-        val baseUrl = "http://192.168.1.5:8090/lean/"
+//        val baseUrl = "http://192.168.1.5:8090/lean/"
 
     }
 

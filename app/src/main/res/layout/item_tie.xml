@@ -3,15 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/material_white">
+    android:background="@color/material_white"
+    android:padding="16dp">
 
     <ImageView
         android:id="@+id/ivAvatar"
         android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_height="38dp"
         android:layout_gravity="center"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
@@ -21,48 +20,50 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="18dp"
         android:text="学学过时"
         android:textColor="@color/material_black"
         android:textSize="14dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvCreateTime"
         app:layout_constraintStart_toEndOf="@+id/ivAvatar"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.13999999"
+        app:layout_constraintVertical_chainStyle="packed" />
 
     <TextView
         android:id="@+id/tvCreateTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:layout_marginStart="8dp"
         android:text="39秒前"
         android:textColor="@color/material_grey_500"
         android:textSize="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/tvContent"
         app:layout_constraintStart_toEndOf="@+id/ivAvatar"
         app:layout_constraintTop_toBottomOf="@+id/tvName" />
 
     <TextView
         android:id="@+id/tvContent"
-        android:layout_marginRight="16dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:text="我不厚道的笑了"
         android:textColor="@color/material_black"
         android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ivAvatar" />
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/ivPic"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="0dp"
         android:layout_gravity="center"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginStart="16dp"
+        android:layout_marginBottom="32dp"
         android:layout_marginTop="8dp"
         android:scaleType="center"
-        app:layout_constraintBottom_toTopOf="@+id/ivShare"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintDimensionRatio="15:9"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvContent"
@@ -70,60 +71,72 @@
         app:riv_border_width="1px"
         tools:ignore="ContentDescription" />
 
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="16dp" />
+
     <ImageView
         android:id="@+id/ivShare"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
         android:src="@mipmap/icon_home_card_share_n"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toStartOf="@+id/tvShare"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
         tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/tvShare"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="18dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
         android:text="分享"
         android:textColor="@color/material_black"
         android:textSize="12dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/ivComment" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/ivComment"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <ImageView
         android:id="@+id/ivLike"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:src="@mipmap/icon_home_card_like_n"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toStartOf="@+id/tvLike"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
         tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/tvLike"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
         android:text="点赞"
         android:textColor="@color/material_black"
         android:textSize="12dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tvComment"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <ImageView
         android:id="@+id/ivComment"
         android:layout_width="20dp"
         android:layout_height="20dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="4dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
         android:src="@mipmap/icon_home_card_comment_n"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toStartOf="@+id/tvComment"
+        app:layout_constraintTop_toTopOf="@+id/guideline2"
         tools:ignore="ContentDescription" />
 
     <TextView
@@ -131,10 +144,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:layout_marginTop="8dp"
         android:text="评论"
         android:textColor="@color/material_black"
         android:textSize="12dp"
-        app:layout_constraintBaseline_toBaselineOf="@+id/tvShare"
-        app:layout_constraintEnd_toStartOf="@+id/ivLike" />
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintEnd_toStartOf="@+id/ivLike"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
 </android.support.constraint.ConstraintLayout>

@@ -1,8 +1,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/material_white"
     android:orientation="vertical">
 
@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:gravity="center"
-        android:text="编辑内容"
+        android:text="发帖"
         android:textColor="@color/material_black"
         android:textSize="17dp" />
 
@@ -21,14 +21,17 @@
         android:background="@color/material_grey_200" />
 
     <EditText
+        android:textSize="18dp"
+        android:hint="写点话吧，点击标题发帖"
         android:id="@+id/etContent"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_height="200dp"
+        android:background="@null"
+        android:gravity="top|left"
+        android:padding="16dp" />
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/ivPic"
-        android:background="@color/material_grey_100"
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_gravity="center"
@@ -36,6 +39,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:background="@color/material_grey_100"
         android:scaleType="center"
         app:layout_constraintBottom_toTopOf="@+id/ivPic"
         app:layout_constraintEnd_toEndOf="parent"
